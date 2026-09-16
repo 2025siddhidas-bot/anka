@@ -6,13 +6,20 @@ import base64
 
 app = Flask(__name__)
 
-@app.route('/generate-bar-chart', methods=['POST'])
+# 1. Health Check Route (Proves the server is awake)
+@app.route('/', methods=['GET'])
+def home():
+    return "Server is live and ready!"
+
+# 2. Bulletproof Chart Route
+@app.route('/generate-bar-chart', methods=['GET', 'POST'], strict_slashes=False)
 def generate_bar_chart():
-    # 1. Catch the true data sent by Make.com
+    # Allow browser testing without crashing
+    if request.method == 'GET':
+        return "The chart endpoint is successfully connected! Waiting for Make.com data."
+
+    # 3. Catch the tgrue data sent by Make.com
     data = request.json
-    
-    # Expecting Make.com to send: {"scores": [3344, 1258, ...]}
-    # If it fails, it defaults to zeros to prevent crashes
     actual_scores = data.get('scores', [0, 0, 0, 0, 0, 0])
     
     labels = ['Physical\nWellness', 'Mental\nWellness', 'Pranic\nWellness', 
