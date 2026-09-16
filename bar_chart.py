@@ -12,15 +12,16 @@ def home():
     return "Server is live and ready!"
 
 # 2. Bulletproof Chart Route
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/generate-bar-chart', methods=['GET', 'POST'], strict_slashes=False)
 def generate_bar_chart():
-    # Allow browser testing without crashing
     if request.method == 'GET':
-        return "The chart endpoint is successfully connected! Waiting for Make.com data."
-
-    # 3. Catch the tgrue data sent by Make.com
-    data = request.json
+        return "Server is live and ready!"
+        
+    # Catch the true data sent by Make.com
+    data = request.json or {}
     actual_scores = data.get('scores', [0, 0, 0, 0, 0, 0])
+    # ... rest of your chart code ...
     
     labels = ['Physical\nWellness', 'Mental\nWellness', 'Pranic\nWellness', 
               'Psychic\nWellness', 'Behavioural\nWellness', 'Lifestyle\nWellness']
